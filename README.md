@@ -46,7 +46,7 @@ Snap-to-Anki is a tool that converts screenshots of study materials into Anki-co
 ## Usage
 
 1. **Prepare your images and study material:**
-    - Place your textbook screenshots or images in the `snap_to_anki/data/input_images` directory.
+    - Place your textbook screenshots or images in the `snap_to_anki/data/<book-name>` directory.
 
 2. **Run the conversion script:**
     ```sh
@@ -56,14 +56,14 @@ Snap-to-Anki is a tool that converts screenshots of study materials into Anki-co
 3. **Import the generated CSV file into Anki:**
     - Open Anki.
     - Go to `File` > `Import`.
-    - Select the `snap_to_anki/data/output/anki_flashcards.csv` file.
+    - Select the `snap_to_anki/output/<book-name>/anki_flashcards.csv` file.
     - Map the fields correctly and import.
 
 
 ## Example
 
 ### Input Image
-Place your screenshot in the `snap_to_anki/data/input_images` folder. For example, `photosynthesis.png`.
+Place your screenshot in the `snap_to_anki/data/<book-name>` folder. For example, `photosynthesis.png`.
 
 ### Generated Flashcard
 The tool will generate entries such as:
