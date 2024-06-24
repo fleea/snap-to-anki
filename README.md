@@ -10,7 +10,7 @@ Snap-to-Anki is a tool that converts screenshots of study materials into Anki-co
 - **Summarization**: Summarizes complex content into concise flashcard entries.
 - **Image Annotation**: Annotates and creates image occlusion flashcards from diagrams and charts.
 - **CSV Formatting for Anki**: Formats extracted and generated content into CSV files ready for Anki import.
-- **Cost Efficiency**: Reduces LLM API costs by performing OCR offline.
+- **Cost Efficiency**: Reduces LLM API costs by performing OCR offline (optional) or uploading the image temporarily to give gpt access
 
 ## Installation
 
@@ -25,7 +25,7 @@ Snap-to-Anki is a tool that converts screenshots of study materials into Anki-co
     pip install -r requirements.txt
     ```
 
-3. **Ensure Tesseract OCR is installed:**
+3. **Ensure Tesseract OCR is installed (if cost saving local ocr is turned on)**
     - For Windows: Download and install from [here](https://github.com/UB-Mannheim/tesseract/wiki).
     - For Mac: Install using Homebrew:
       ```sh

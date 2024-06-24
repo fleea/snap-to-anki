@@ -1,0 +1,10 @@
+pip~=23.2.1
+distro~=1.9.0
+pillow~=10.3.0
+setuptools~=70.1.0
+typing_extensions~=4.12.2
+packaging~=24.1
+pytesseract~=0.3.10
+requests~=2.32.3
+python-dotenv~=1.0.1
+pandas~=2.2.2

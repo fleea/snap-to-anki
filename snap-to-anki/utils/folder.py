@@ -38,3 +38,5 @@ def get_target_folders(directory: str = 'data', book_name: Optional[str] = None)
     return folders
 
 
+def get_file_name(file_path: str):
+    return os.path.splitext(os.path.basename(file_path))[0]

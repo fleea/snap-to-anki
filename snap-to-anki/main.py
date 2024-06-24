@@ -10,14 +10,24 @@ import os
 import argparse
 # from snap_to_anki.ocr import process_images
 # from snap_to_anki.converter import convert_images_to_anki
-from .utils.folder import get_target_folders, init_output_folders
+from .utils.folder import get_target_folders, get_file_name
 from typing import List
+from .utils.ocr import process_image
+from dotenv import load_dotenv
+from .utils.prompt import get_prompt
+from .utils.openai import get_anki_csv
+from .utils.csv import save_csv
+import json
+
+load_dotenv()
+openai_key = os.getenv('OPENAI_API_KEY')
 
 
 def main():
     parser = argparse.ArgumentParser(description="Process study materials and generate Anki flashcards.")
     parser.add_argument('--book_name', required=False, help="Name of the folders to process separated by comma")
     parser.add_argument('--ocr_language', default='eng', help="Language for OCR processing (default: 'eng').")
+    parser.add_argument('--local-ocr', default=False, help="Use Local OCR (for books with text only) to save cost")
 
     args = parser.parse_args()
     book_names = args.book_name
@@ -56,7 +66,29 @@ def main():
         # Add new files to the processed.txt log
         with open(log_file_path, 'a') as log_file:
             for file in new_files:
-                # process_file(os.path.join(input_folder, file))
+                # START PROCESSING FILES HERE
+                print(os.path.join(input_folder, file))
+                ocr_text = process_image(os.path.join(input_folder, file))  # THIS TAKES A WHILE
+                prompt_text = get_prompt(ocr_text)
+                filename = get_file_name(file)
+                print(filename, prompt_text)
+
+                # OCR RESULT
+                ocr_file_path = os.path.join(output_folder, filename + '-ocr.txt')
+                with open(ocr_file_path, 'w') as ocr_file:
+                    ocr_file.write(ocr_text)
+
+                # RESPONSE RESULT (from chatgpt)
+                response = get_anki_csv(openai_key, prompt_text)  # THIS IS EXPENSIVE
+                response_file_path = os.path.join(output_folder, filename + '-response.json')
+                with open(response_file_path, 'w') as csv_file:
+                    json.dump(response, csv_file)
+
+                csv_file_path = os.path.join(output_folder, filename + '-flashcard.csv')
+                content = response["choices"][0]["message"]["content"]
+
+                save_csv(content, csv_file_path)
+
                 log_file.write(file + '\n')
                 all_processed_files.append(file)
 

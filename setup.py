@@ -11,6 +11,7 @@ setup(
         'pytesseract',
         'openai',
         'python-dotenv',
+        'Pillow'
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
