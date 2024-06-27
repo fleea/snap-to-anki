@@ -6,7 +6,7 @@ Your task is to generate a CSV file containing Anki flashcards based on the prov
 {additional_detail}
 Instructions:
 1. Analyze the content of the {input_type}
-2. Create Anki {flashcard_type} flashcards based on the content of the {input_type}.
+2. Create as many Anki {flashcard_type} flashcards as possible based on the content of the {input_type}.
 3. Use ; as separator.
 4. Use input language for the flashcard output language
 5. Output only the CSV content without any additional text or explanations.

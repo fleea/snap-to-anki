@@ -75,15 +75,12 @@ def main():
                 print(file_path)
                 prompt_content = generate_req_content(anki_type, local_ocr, file_path)
                 print(prompt_content)
-                # ocr_text = process_image(os.path.join(input_folder, file))  # THIS TAKES A WHILE
-                # prompt_text = generate_basic_prompt_text(ocr_text)
-                # print(filename, prompt_text)
-                #
-                # # OCR RESULT
+
+                # OCR RESULT
                 # ocr_file_path = os.path.join(output_folder, filename + '-ocr.txt')
                 # with open(ocr_file_path, 'w') as ocr_file:
                 #     ocr_file.write(ocr_text)
-                #
+
                 # RESPONSE RESULT (from chatgpt)
                 response = get_anki_csv(openai_key, prompt_content)  # THIS IS EXPENSIVE
                 response_file_path = os.path.join(output_folder, filename + '-response.json')
