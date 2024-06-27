@@ -16,7 +16,7 @@ def is_image_file(file_path: str) -> bool:
     return imghdr.what(file_path) is not None
 
 
-def process_image(image_path: str) -> str:
+def get_ocr_text(image_path: str) -> str:
     """
     Perform OCR on an image file and return the extracted text.
 

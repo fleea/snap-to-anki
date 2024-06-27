@@ -1,7 +1,8 @@
 import requests
+from typing import List
 
 
-def get_anki_csv(api_key: str, prompt: str):
+def get_anki_csv(api_key: str, content: List[dict]) -> str:
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}"
@@ -12,15 +13,10 @@ def get_anki_csv(api_key: str, prompt: str):
         "messages": [
             {
                 "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": prompt
-                    },
-                ]
+                "content": content
             }
         ],
-        "max_tokens": 2000
+        "max_tokens": 4000
     }
 
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
