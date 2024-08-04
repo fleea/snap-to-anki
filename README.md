@@ -1,23 +1,38 @@
 # Snap-to-Anki
 
-Snap-to-Anki is a tool that converts screenshots of study materials into Anki-compatible flashcards. By leveraging advanced OCR and LLM technologies, Snap-to-Anki streamlines the creation of effective, personalized study aids. The project also aims to reduce LLM API costs by performing OCR offline, making it both efficient and cost-effective.
+Snap-to-Anki is a tool that converts screenshots of study materials into Anki-compatible flashcards. By leveraging
+advanced OCR and LLM technologies, Snap-to-Anki streamlines the creation of effective, personalized study aids. The
+project also aims to reduce LLM API costs by performing OCR offline, making it both efficient and cost-effective.
 
 ## Features
 
 - **Text Extraction from Images**: Automatically extracts text from images using Optical Character Recognition (OCR).
-- **Question and Answer Generation**: Generates comprehensive questions and answers from raw text using Large Language Models (LLMs).
+- **Question and Answer Generation**: Generates comprehensive questions and answers from raw text using Large Language
+  Models (LLMs).
 - **Cloze Deletion Creation**: Creates fill-in-the-blank (cloze) flashcards for key information.
 - **Summarization**: Summarizes complex content into concise flashcard entries.
 - **Image Annotation**: Annotates and creates image occlusion flashcards from diagrams and charts.
 - **CSV Formatting for Anki**: Formats extracted and generated content into CSV files ready for Anki import.
-- **Cost Efficiency**: Reduces LLM API costs by performing OCR offline (optional) or uploading the image temporarily to give gpt access
+- **Cost Efficiency**: Reduces LLM API costs by performing OCR offline (optional) or uploading the image temporarily to
+  give gpt access
+
+## HOW TO RUN
+
+```sh
+python3.12 -m venv venv # create venv (if no venv folder yet)
+source venv/bin/activate # activate venv
+deactivate # to turn off venv
+pip install -r api/requirements.txt # install all requirements located in api
+# add OpenAI API Key in .env
+python3.12 api/src/main.py --folders test
+```
 
 ## Installation
 
 1. **Clone the repository:**
     ```sh
     git clone https://github.com/fleea/snap-to-anki.git
-    cd snap-to-anki
+    cd src
     ```
 
 2. **Install required dependencies:**
@@ -59,20 +74,21 @@ Snap-to-Anki is a tool that converts screenshots of study materials into Anki-co
     - Select the `snap_to_anki/output/<book-name>/anki_flashcards.csv` file.
     - Map the fields correctly and import.
 
-
 ## Example
 
 ### Input Image
+
 Place your screenshot in the `snap_to_anki/data/<book-name>` folder. For example, `photosynthesis.png`.
 
 ### Generated Flashcard
+
 The tool will generate entries such as:
 
-| Front                                       | Back                                                                 |
-|---------------------------------------------|----------------------------------------------------------------------|
-| What is photosynthesis?                     | Photosynthesis is the process by which green plants use sunlight...  |
-| The capital of France is {{c1::Paris}}.     | The capital of France is Paris.                                      |
-| Identify this molecule. <img src='glucose.png'> | It's glucose.                                                        |
+| Front                                           | Back                                                                |
+|-------------------------------------------------|---------------------------------------------------------------------|
+| What is photosynthesis?                         | Photosynthesis is the process by which green plants use sunlight... |
+| The capital of France is {{c1::Paris}}.         | The capital of France is Paris.                                     |
+| Identify this molecule. <img src='glucose.png'> | It's glucose.                                                       |
 
 ## Contributing
 
