@@ -3,9 +3,9 @@
 import cv2
 from matplotlib import pyplot as plt
 
-import api.src.utils.path_constants as default_path
+import api.src.utils.constants as default_path
 from api.src.utils.image.crop_and_straighten import crop_and_straighten
-from api.src.utils.path_manipulation import get_path
+from api.src.utils.path import get_path
 
 
 def process_image(image_path: str):
