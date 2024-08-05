@@ -21,7 +21,7 @@ setup(
     python_requires='>=3.12',
     entry_points={
         'convert': [
-            'snap_to_anki=snap-to-anki.main:main',
+            'snap_to_anki=src.main:main',
         ],
     },
 )

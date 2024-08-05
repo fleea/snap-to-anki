@@ -1,5 +1,6 @@
-import requests
 from typing import List
+
+import requests
 
 
 def get_anki_csv(api_key: str, content: List[dict]) -> str:
@@ -9,14 +10,14 @@ def get_anki_csv(api_key: str, content: List[dict]) -> str:
     }
 
     payload = {
-        "model": "gpt-4o",
+        "model": "gpt-4o-mini",
         "messages": [
             {
                 "role": "user",
                 "content": content
             }
         ],
-        "max_tokens": 4000
+        "max_tokens": 10_000
     }
 
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)

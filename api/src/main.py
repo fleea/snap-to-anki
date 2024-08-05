@@ -1,3 +1,6 @@
+# IMPORTANT HOW TO RUN
+# export PYTHONPATH=$PYTHONPATH:.
+# python3.12 api/src/main.py --folders test
 # Check input files in data/folder
 # For each folder, check corresponding output/folder
 # If no corresponding folder, run the script for all images in the folder
@@ -6,18 +9,29 @@
 # If there is no line in processed.txt that is corresponding to the file name in data/book-name folder,
 # then process and save
 
-import os
+# Image requirements
+# Error: 400, {
+#   "error": {
+#     "message": "You uploaded an unsupported image. Please make sure your image is below 20 MB in size and is of one the following formats: ['png', 'jpeg', 'gif', 'webp'].",
+#     "type": "invalid_request_error",
+#     "param": null,
+#     "code": "invalid_image_format"
+#   }
+# }
+
 import argparse
+import json
+import os
+
+from dotenv import load_dotenv
+
+from api.src.utils.content import generate_req_content
+from api.src.utils.csv import save_csv
 # from snap_to_anki.ocr import process_images
 # from snap_to_anki.converter import convert_images_to_anki
-from .utils.folder import get_target_folders, get_file_name
-from .utils.ocr import get_ocr_text
-from dotenv import load_dotenv
-from .prompts.basic import generate_basic_prompt_text
-from .utils.openai import get_anki_csv
-from .utils.csv import save_csv
-from .utils.content import generate_req_content
-import json
+from api.src.utils.folder import get_target_folders, get_file_name, get_processed_files, is_valid_file
+from api.src.utils.openai import get_anki_csv
+
 load_dotenv()
 openai_key = os.getenv('OPENAI_API_KEY')
 
@@ -26,19 +40,20 @@ def main():
     parser = argparse.ArgumentParser(description="Process study materials and generate Anki flashcards.")
     parser.add_argument('--folders', required=False, help="Name of the folders to process separated by comma")
     parser.add_argument('--lang', default='auto', help="Language for OCR processing (default: 'eng').")
-    parser.add_argument('--local_ocr', action='store_true', help="Use Local OCR (for books with text only) to save cost")
+    parser.add_argument('--local_ocr', action='store_true',
+                        help="Use Local OCR (for books with text only) to save cost")
     parser.add_argument('--type', default='basic', help="Anki Flashcards Type (basic, multiple-choice, cloze)")
 
     args = parser.parse_args()
     folders = args.folders
-    input_dir = 'data'
-    output_dir = 'output'
+    input_dir = 'data/input'
+    output_dir = 'data/output'
     log_name = 'processed.txt'
     anki_type = args.type
     local_ocr = args.local_ocr
-    lang = args.lang
 
     target_folders = get_target_folders(input_dir, folders)
+    print(target_folders)
     all_processed_files = []
 
     for name in target_folders:
@@ -55,16 +70,13 @@ def main():
                 file_list.append(os.path.relpath(os.path.join(root, file), input_folder))
 
         log_file_path = os.path.join(output_folder, log_name)
-
-        # Read the existing log file if it exists
-        # Use set to avoid duplicates
-        processed_files = set()
-        if os.path.exists(log_file_path):
-            with open(log_file_path, 'r') as log_file:
-                processed_files = set(log_file.read().splitlines())
+        processed_files = get_processed_files(log_file_path)
 
         # Process files that are not in the log file
-        new_files = [file for file in file_list if file not in processed_files]
+        new_files = [
+            file for file in file_list
+            if file not in processed_files and is_valid_file(os.path.join(input_folder, file))
+        ]
 
         # Add new files to the processed.txt log
         with open(log_file_path, 'a') as log_file:
@@ -88,6 +100,7 @@ def main():
                     json.dump(response, csv_file)
 
                 csv_file_path = os.path.join(output_folder, filename + '-flashcard.csv')
+                print(response)
                 content = response["choices"][0]["message"]["content"]
 
                 save_csv(content, csv_file_path)
