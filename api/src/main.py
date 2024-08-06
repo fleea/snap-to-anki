@@ -20,26 +20,27 @@
 # }
 
 import argparse
-import json
+# import json
 import os
 
-from dotenv import load_dotenv
-
-from api.src.utils.content import generate_req_content
-from api.src.utils.csv import save_csv
+from api.src.agents.load_transcribe import load_and_transcribe
+from api.src.utils.folder import get_target_folders, get_processed_files
+from api.src.utils.image_file import get_file_name, is_valid_file
+# from api.src.utils.csv import save_csv
 # from snap_to_anki.ocr import process_images
 # from snap_to_anki.converter import convert_images_to_anki
-from api.src.utils.folder import get_target_folders, get_file_name, get_processed_files, is_valid_file
-from api.src.utils.openai import get_anki_csv
+from api.src.utils.setup_env import setup_env
 
-load_dotenv()
-openai_key = os.getenv('OPENAI_API_KEY')
+
+# from api.src.utils.openai import get_anki_csv
 
 
 def main():
+    setup_env()
     parser = argparse.ArgumentParser(description="Process study materials and generate Anki flashcards.")
     parser.add_argument('--folders', required=False, help="Name of the folders to process separated by comma")
-    parser.add_argument('--lang', default='auto', help="Language for OCR processing (default: 'eng').")
+    parser.add_argument('--lang', default='auto',
+                        help="Language for OCR processing (default: auto detected from the image text).")
     parser.add_argument('--local_ocr', action='store_true',
                         help="Use Local OCR (for books with text only) to save cost")
     parser.add_argument('--type', default='basic', help="Anki Flashcards Type (basic, multiple-choice, cloze)")
@@ -53,7 +54,6 @@ def main():
     local_ocr = args.local_ocr
 
     target_folders = get_target_folders(input_dir, folders)
-    print(target_folders)
     all_processed_files = []
 
     for name in target_folders:
@@ -84,9 +84,8 @@ def main():
                 # START PROCESSING FILES HERE
                 filename = get_file_name(file)
                 file_path = os.path.join(input_folder, file)
-                print(file_path)
-                prompt_content = generate_req_content(anki_type, local_ocr, file_path)
-                print(prompt_content)
+                load_and_transcribe(file_path)
+                # prompt_content = generate_req_content(anki_type, local_ocr, file_path)
 
                 # OCR RESULT
                 # ocr_file_path = os.path.join(output_folder, filename + '-ocr.txt')
@@ -94,19 +93,20 @@ def main():
                 #     ocr_file.write(ocr_text)
 
                 # RESPONSE RESULT (from chatgpt)
-                response = get_anki_csv(openai_key, prompt_content)  # THIS IS EXPENSIVE
-                response_file_path = os.path.join(output_folder, filename + '-response.json')
-                with open(response_file_path, 'w') as csv_file:
-                    json.dump(response, csv_file)
-
-                csv_file_path = os.path.join(output_folder, filename + '-flashcard.csv')
-                print(response)
-                content = response["choices"][0]["message"]["content"]
-
-                save_csv(content, csv_file_path)
-
-                log_file.write(file + '\n')
-                all_processed_files.append(file)
+                # response = get_anki_csv(openai_key, prompt_content)  # THIS IS EXPENSIVE
+                # print(response)
+                # response_file_path = os.path.join(output_folder, filename + '-response.json')
+                # with open(response_file_path, 'w') as csv_file:
+                #     json.dump(response, csv_file)
+                #
+                # csv_file_path = os.path.join(output_folder, filename + '-flashcard.csv')
+                # print(response)
+                # content = response["choices"][0]["message"]["content"]
+                #
+                # save_csv(content, csv_file_path)
+                #
+                # log_file.write(file + '\n')
+                # all_processed_files.append(file)
 
         print(f"Updated {log_file_path} with {len(new_files)} new files.")
 
