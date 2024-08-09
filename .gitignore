@@ -167,3 +167,4 @@ data/output/**/*
 
 .DS_Store
 **/.DS_STORE
+codebase.md

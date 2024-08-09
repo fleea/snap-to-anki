@@ -1,121 +1,95 @@
-# Snap-to-Anki
+# Snap-to-Anki API
 
-Snap-to-Anki is a tool that converts screenshots of study materials into Anki-compatible flashcards. By leveraging
-advanced OCR and LLM technologies, Snap-to-Anki streamlines the creation of effective, personalized study aids. The
-project also aims to reduce LLM API costs by performing OCR offline, making it both efficient and cost-effective.
+This project is an API for converting images of study materials into Anki flashcards.
 
-## Features
+## Prerequisites
 
-- **Text Extraction from Images**: Automatically extracts text from images using Optical Character Recognition (OCR).
-- **Question and Answer Generation**: Generates comprehensive questions and answers from raw text using Large Language
-  Models (LLMs).
-- **Cloze Deletion Creation**: Creates fill-in-the-blank (cloze) flashcards for key information.
-- **Summarization**: Summarizes complex content into concise flashcard entries.
-- **Image Annotation**: Annotates and creates image occlusion flashcards from diagrams and charts.
-- **CSV Formatting for Anki**: Formats extracted and generated content into CSV files ready for Anki import.
-- **Cost Efficiency**: Reduces LLM API costs by performing OCR offline (optional) or uploading the image temporarily to
-  give gpt access
+- Python 3.12
+- pip (Python package manager)
 
-## HOW TO RUN
+## Setup
 
-```sh
-python3.12 -m venv venv # create venv (if no venv folder yet)
-source venv/bin/activate # activate venv
-deactivate # to turn off venv
-pip install -r api/requirements.txt # install all requirements located in api
-# add OpenAI API Key in .env
-python3.12 api/src/main.py --folders test
-```
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   cd <repository-name>
+   ```
 
-## Installation
+2. Create a virtual environment (optional but recommended):
+   ```
+   python3.12 -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   ```
 
-1. **Clone the repository:**
-    ```sh
-    git clone https://github.com/fleea/snap-to-anki.git
-    cd src
-    ```
+3. Install the required dependencies:
+   ```
+   pip install -r api/requirements.txt
+   ```
 
-2. **Install required dependencies:**
-    ```sh
-    pip install -r requirements.txt
-    ```
+4. Set up environment variables:
+   Create a `.env` file in the root directory with the following content:
+   ```
+   OPENAI_API_KEY=your_openai_api_key_here
+   LANGCHAIN_API_KEY=your_langchain_api_key_here # Optional
+   ```
+   Replace `your_openai_api_key_here` and `your_langchain_api_key_here` with your actual API keys.
 
-3. **Ensure Tesseract OCR is installed (if cost saving local ocr is turned on)**
-    - For Windows: Download and install from [here](https://github.com/UB-Mannheim/tesseract/wiki).
-    - For Mac: Install using Homebrew:
-      ```sh
-      brew install tesseract
-      ```
-    - For Linux: Install using package manager:
-      ```sh
-      sudo apt-get install tesseract-ocr
-      ```
+## Running the Application
 
-4. **Add your OpenAI API token:**
-    - Create a `.env` file in the root directory of the project.
-    - Add your OpenAI API token to the `.env` file:
-      ```sh
-      OPENAI_API_KEY=your_openai_api_key_here
-      ```
+1. Ensure you're in the project root directory and your virtual environment is activated.
 
-## Usage
+2. Set the PYTHONPATH:
+   ```
+   export PYTHONPATH=$PYTHONPATH:.
+   ```
 
-1. **Prepare your images and study material:**
-    - Place your textbook screenshots or images in the `snap_to_anki/data/<book-name>` directory.
+3. Run the main script:
+   ```
+   python3.12 api/src/main.py --folders test
+   ```
+   Replace `test` with the name of the folder(s) you want to process. You can specify multiple folders by separating
+   them with commas.
 
-2. **Run the conversion script:**
-    ```sh
-    python -m snap_to_anki.converter
-    ```
+4. The script will process the images in the specified folder(s) and generate Anki flashcards in CSV format.
 
-3. **Import the generated CSV file into Anki:**
-    - Open Anki.
-    - Go to `File` > `Import`.
-    - Select the `snap_to_anki/output/<book-name>/anki_flashcards.csv` file.
-    - Map the fields correctly and import.
+## Folder Structure
 
-## Example
+- `api`: Contains the source code for the API.
+- `data`: Contains the input and output folders.
+    - `data/input`: Place your input images in subfolders here.
+    - `data/output`: The generated flashcards and other output files will be saved here.
 
-### Input Image
+### Example input and output folder structure:
 
-Place your screenshot in the `snap_to_anki/data/<book-name>` folder. For example, `photosynthesis.png`.
+- `data/input`
+    - `book_name`
+        - `image1.png`
+        - `image2.jpg`
+- `data/output`
+    - `book_name`
+        - `image1`
+            - `base64.txt`
+            - `transcription.txt`
+            - `flashcard.csv`
+        - `image2`
+            - `base64.txt`
+            - `transcription.txt`
+            - `flashcard.csv`
 
-### Generated Flashcard
+## Additional Notes
 
-The tool will generate entries such as:
+- The application uses OpenAI's GPT-4 model for text generation. Ensure you have sufficient credits in your OpenAI
+  account.
+- For each processed image, the application generates a base64 encoding, a transcription, and a CSV file with
+  flashcards.
 
-| Front                                           | Back                                                                |
-|-------------------------------------------------|---------------------------------------------------------------------|
-| What is photosynthesis?                         | Photosynthesis is the process by which green plants use sunlight... |
-| The capital of France is {{c1::Paris}}.         | The capital of France is Paris.                                     |
-| Identify this molecule. <img src='glucose.png'> | It's glucose.                                                       |
+## Troubleshooting
 
+If you encounter any issues:
 
-### Generate requirements automatically
-```
-pip3 install pipreqs
-pip3 install pip-tools
-pipreqs --savepath=requirements.in && pip-compile
-```
+1. Ensure all dependencies are correctly installed.
+2. Check that your API keys are correctly set in the `.env` file.
+3. Verify that the input images are in a supported format (png, jpeg, gif, webp) and under 20MB in size.
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgements
-
-- [OpenAI](https://openai.com/)
-- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
-- [Anki](https://apps.ankiweb.net/)
-
-## Contact
-
-For questions or suggestions, please open an issue.
-
----
-
-Happy Studying!
+For more detailed information about the code structure and functionality, please refer to the individual Python files in
+the `api/src` directory.
