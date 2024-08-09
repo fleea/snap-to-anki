@@ -1,5 +1,6 @@
 from typing import List
 
+
 base_template: str = """
 You are a highly intelligent AI capable of interpreting images and generating educational content. 
 Your task is to generate a CSV file containing Anki flashcards based on the provided input. 
