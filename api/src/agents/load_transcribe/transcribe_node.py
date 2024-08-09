@@ -24,4 +24,4 @@ def transcribe_node(state: State):
             "encoded_image_url": f"data:{state["mime_type"]};base64,{state["base_64_string"]}"
         }
     )
-    return {"transcription": transcription.content, type: "basic"}
+    return {"transcription": transcription.content, "type": "basic"}
