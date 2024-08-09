@@ -57,10 +57,7 @@ def is_valid_file(file_path):
     file_extension = os.path.splitext(file_path)[1][1:].lower()
 
     # Check if the file meets all criteria
-    if file_size < 20 and file_extension in allowed_formats:
-        return True
-    else:
-        return False
+    return file_size < 20 and file_extension in allowed_formats
 
 
 def get_file_name(file_path: str):

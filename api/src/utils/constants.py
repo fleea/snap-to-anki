@@ -10,4 +10,4 @@ output_dir = "data/output"
 
 load_dotenv()
 openai_key = os.getenv("OPENAI_API_KEY")
-langchain_key = os.getenv("OPENAI_API_KEY")
+langchain_key = os.getenv("LANGCHAIN_API_KEY")
