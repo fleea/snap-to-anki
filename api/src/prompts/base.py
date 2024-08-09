@@ -1,5 +1,6 @@
 from typing import List
 
+
 base_template: str = """
 You are a highly intelligent AI capable of interpreting images and generating educational content. 
 Your task is to generate a CSV file containing Anki flashcards based on the provided input. 
@@ -33,4 +34,4 @@ columns: dict[str, str] = {
 
 def get_columns_strings(keys: List[str]) -> str:
     values = [columns[key] for key in keys if columns[key]]
-    return ', '.join(values[:-1]) + ', and ' + values[-1]
+    return ", ".join(values[:-1]) + ", and " + values[-1]

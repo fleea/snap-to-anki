@@ -90,6 +90,14 @@ The tool will generate entries such as:
 | The capital of France is {{c1::Paris}}.         | The capital of France is Paris.                                     |
 | Identify this molecule. <img src='glucose.png'> | It's glucose.                                                       |
 
+
+### Generate requirements automatically
+```
+pip3 install pipreqs
+pip3 install pip-tools
+pipreqs --savepath=requirements.in && pip-compile
+```
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.

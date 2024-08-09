@@ -1,0 +1,14 @@
+{
+  "python_version": "3.12",
+  "dockerfile_lines": [],
+  "dependencies": [
+    ".",
+    "langchain-community",
+    "python-dotenv",
+    "langchain_openai"
+  ],
+  "graphs": {
+    "agent": "./api/src/agents/load_transcribe.py:get_graph"
+  },
+  "env": ".env"
+}
