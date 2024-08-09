@@ -34,4 +34,3 @@ def get_ocr_text(image_path: str) -> str:
     else:
         print(f"Image file {image_path} not found or not an image")
         return ""
-

@@ -13,7 +13,9 @@ def crop_and_straighten(input_path: str):
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
 
     # Apply adaptive thresholding
-    thresh = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
+    thresh = cv2.adaptiveThreshold(
+        blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2
+    )
 
     # Find contours
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -32,10 +34,10 @@ def crop_and_straighten(input_path: str):
 
     src_pts = box.astype("float32")
     # Coordinate of the points in box points after the rectangle has been straightened
-    dst_pts = np.array([[0, height - 1],
-                        [0, 0],
-                        [width - 1, 0],
-                        [width - 1, height - 1]], dtype="float32")
+    dst_pts = np.array(
+        [[0, height - 1], [0, 0], [width - 1, 0], [width - 1, height - 1]],
+        dtype="float32",
+    )
 
     # The perspective transformation matrix
     M = cv2.getPerspectiveTransform(src_pts, dst_pts)
@@ -45,6 +47,14 @@ def crop_and_straighten(input_path: str):
 
     # Add a small padding
     padding = 5
-    warped = cv2.copyMakeBorder(warped, padding, padding, padding, padding, cv2.BORDER_CONSTANT, value=[255, 255, 255])
+    warped = cv2.copyMakeBorder(
+        warped,
+        padding,
+        padding,
+        padding,
+        padding,
+        cv2.BORDER_CONSTANT,
+        value=[255, 255, 255],
+    )
 
     return warped

@@ -7,17 +7,17 @@
 from .base import base_template, get_columns_strings
 
 
-cloze_detail = '''Each flashcard should have a sentence with specific information removed for the user to recall, 
+cloze_detail = """Each flashcard should have a sentence with specific information removed for the user to recall, 
 using the cloze deletion format with double brackets.
-'''
+"""
 
-cloze_intruction = '''
+cloze_intruction = """
 8. Each subsequent row should contain the generated cloze deletion sentence and the hidden information for a flashcard.
 9. Use the cloze deletion format {{c1::Text-to-be-hidden}} for the first cloze deletion in each sentence. 
 For additional deletions in the same sentence, increment the number (e.g., {{c2::Text-to-be-hidden}})
 10. The "Front" column should contain the sentence with the cloze deletion format applied.
 11. The "Back" column should contain the text that was hidden within the cloze deletion brackets.
-'''
+"""
 
 
 def generate_cloze_prompt_text(text: str) -> str:
@@ -42,5 +42,5 @@ def generate_cloze_prompt_image() -> str:
         columns=get_columns_strings(["FRONT_CLOZE", "BACK_CLOZE", "EXAMPLE", "EXTRA"]),
         headers='''"Front" and "Back"''',
         input_type_upper="",
-        input=""
+        input="",
     )

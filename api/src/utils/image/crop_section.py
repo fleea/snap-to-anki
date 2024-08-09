@@ -35,7 +35,9 @@ def group_regions(regions):
     groups = []
     current_group = [sorted_regions[0]]
     for region in sorted_regions[1:]:
-        if region[1] - (current_group[-1][1] + current_group[-1][3]) < 20:  # Adjust this threshold as needed
+        if (
+            region[1] - (current_group[-1][1] + current_group[-1][3]) < 20
+        ):  # Adjust this threshold as needed
             current_group.append(region)
         else:
             groups.append(current_group)
@@ -61,7 +63,7 @@ def split_image(image_path, output_dir):
         h = max_y - y
 
         # Save the region as an image
-        roi = img[y:y + h, x:x + w]
+        roi = img[y : y + h, x : x + w]
         output_path = os.path.join(output_dir, f"region_{i}.png")
         cv2.imwrite(output_path, roi)
 
@@ -71,7 +73,9 @@ def split_image(image_path, output_dir):
 
 if __name__ == "__main__":
     # Get the project root (3 levels up from the script location)
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+    project_root = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "..")
+    )
 
     # Define paths
     input_folder = "data/input/test"
@@ -80,7 +84,9 @@ if __name__ == "__main__":
 
     # Construct full paths
     image_path = os.path.join(project_root, input_folder, image_name)
-    output_dir = os.path.join(project_root, output_folder, os.path.splitext(image_name)[0])
+    output_dir = os.path.join(
+        project_root, output_folder, os.path.splitext(image_name)[0]
+    )
 
     print(f"Image path: {image_path}")
     print(f"Output directory: {output_dir}")

@@ -4,7 +4,7 @@ from langchain_core.messages import BaseMessage
 from langgraph.graph.message import add_messages
 
 
-class LoadTranscribeState(TypedDict):
+class State(TypedDict):
     messages: Annotated[Sequence[BaseMessage], add_messages]
     mime_type: str
     base_64_string: str

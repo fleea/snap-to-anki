@@ -17,7 +17,7 @@ def generate_basic_prompt_text(text: str) -> str:
         columns=get_columns_strings(["FRONT", "BACK", "EXAMPLE", "EXTRA"]),
         headers='''"Front" and "Back"''',
         input_type_upper="TEXT",
-        input=text
+        input=text,
     )
 
 
@@ -30,7 +30,7 @@ def generate_basic_prompt_image() -> str:
         columns=get_columns_strings(["FRONT", "BACK", "EXAMPLE", "EXTRA"]),
         headers='''"Front" and "Back"''',
         input_type_upper="",
-        input=""
+        input="",
     )
 
 

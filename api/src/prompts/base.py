@@ -34,4 +34,4 @@ columns: dict[str, str] = {
 
 def get_columns_strings(keys: List[str]) -> str:
     values = [columns[key] for key in keys if columns[key]]
-    return ', '.join(values[:-1]) + ', and ' + values[-1]
+    return ", ".join(values[:-1]) + ", and " + values[-1]

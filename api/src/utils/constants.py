@@ -5,9 +5,9 @@ import os
 from dotenv import load_dotenv
 
 # FROM ROOT DIR
-input_dir = 'data/input'
-output_dir = 'data/output'
+input_dir = "data/input"
+output_dir = "data/output"
 
 load_dotenv()
-openai_key = os.getenv('OPENAI_API_KEY')
-langchain_key = os.getenv('OPENAI_API_KEY')
+openai_key = os.getenv("OPENAI_API_KEY")
+langchain_key = os.getenv("OPENAI_API_KEY")

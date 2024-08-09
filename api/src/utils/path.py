@@ -14,5 +14,5 @@ def get_path(*args: str) -> Path:
     return os.path.join(root_dir, *args)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(sys.path)
