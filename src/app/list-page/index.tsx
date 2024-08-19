@@ -1,6 +1,9 @@
+"use client";
+
 import Tree from "@/app/components/tree";
 import { defaultData } from "@/app/components/tree/type";
-import Table from "@/app/components/table";
+import Table from "@/app/list-page/table";
+import Loader from "@/app/list-page/loader";
 
 const ListPage = () => {
   return (
@@ -13,6 +16,7 @@ const ListPage = () => {
           <Tree data={defaultData} />
         </div>
         <div className="col-span-8">
+          <Loader />
           <Table />
         </div>
       </div>

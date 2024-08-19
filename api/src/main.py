@@ -1,4 +1,6 @@
 # IMPORTANT HOW TO RUN
+
+# via terminal
 # export PYTHONPATH=$PYTHONPATH:.
 # python3.12 api/src/main.py --folders test
 # Check input files in data/folder
@@ -20,46 +22,46 @@
 # }
 
 import argparse
-
 # import json
 import os
 
 from api.src.agents.load_transcribe.main import load_and_transcribe
+from api.src.utils.csv import save_csv
 from api.src.utils.folder import get_target_folders, get_processed_files
 from api.src.utils.image_file import get_file_name, is_valid_file
-
-from api.src.utils.csv import save_csv
 # from snap_to_anki.ocr import process_images
 # from snap_to_anki.converter import convert_images_to_anki
 from api.src.utils.setup_env import setup_env
 
 
-# from api.src.utils.openai import get_anki_csv
-
-
-def main():
+def main(folders=None, lang="auto", type="basic"):
     setup_env()
-    parser = argparse.ArgumentParser(
-        description="Process study materials and generate Anki flashcards."
-    )
-    parser.add_argument(
-        "--folders",
-        required=False,
-        help="Name of the folders to process separated by comma",
-    )
-    parser.add_argument(
-        "--lang",
-        default="auto",
-        help="Language for OCR processing (default: auto detected from the image text).",
-    )
-    parser.add_argument(
-        "--type",
-        default="basic",
-        help="Anki Flashcards Type (basic, multiple-choice, cloze)",
-    )
 
-    args = parser.parse_args()
-    folders = args.folders
+    if folders is None:
+        parser = argparse.ArgumentParser(
+            description="Process study materials and generate Anki flashcards."
+        )
+        parser.add_argument(
+            "--folders",
+            required=False,
+            help="Name of the folders to process separated by comma",
+        )
+        parser.add_argument(
+            "--lang",
+            default="auto",
+            help="Language for OCR processing (default: auto detected from the image text).",
+        )
+        parser.add_argument(
+            "--type",
+            default="basic",
+            help="Anki Flashcards Type (basic, multiple-choice, cloze)",
+        )
+
+        args = parser.parse_args()
+        folders = args.folders
+        lang = args.lang
+        type = args.type
+
     input_dir = "data/input"
     output_dir = "data/output"
     log_name = "processed.txt"
@@ -90,7 +92,7 @@ def main():
             file
             for file in file_list
             if file not in processed_files
-            and is_valid_file(os.path.join(input_folder, file))
+               and is_valid_file(os.path.join(input_folder, file))
         ]
 
         # Add new files to the processed.txt log
