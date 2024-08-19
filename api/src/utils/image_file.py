@@ -44,8 +44,10 @@ def get_mime_type(file_path: str) -> str:
 
 def is_valid_file(file_path):
     # List of allowed file formats
-    allowed_formats = ["png", "jpeg", "gif", "webp"]
+    allowed_formats = ["png", "jpeg", "gif", "webp", "jpg"]
 
+    print(f"Checking file: {file_path}")
+    print(f"Is file exist: {os.path.exists(file_path)}")
     # Check if the file exists
     if not os.path.exists(file_path):
         return False
@@ -56,6 +58,9 @@ def is_valid_file(file_path):
     # Get the file extension (without the dot) and convert to lowercase
     file_extension = os.path.splitext(file_path)[1][1:].lower()
 
+    print(f"File size: {file_size}")
+    print(f"File extension: {file_extension}")
+    print(file_size < 20 and file_extension in allowed_formats)
     # Check if the file meets all criteria
     return file_size < 20 and file_extension in allowed_formats
 

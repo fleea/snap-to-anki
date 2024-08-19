@@ -76,6 +76,7 @@ def main(folders=None, lang="auto", type="basic"):
             os.makedirs(output_folder)
             print(f"Directory {output_folder} created.")
 
+        print(f"Processing Input Folder {input_folder}...")
         # List all files in the directory (flattened)
         file_list = []
         for root, _, files in os.walk(input_folder):
@@ -83,9 +84,11 @@ def main(folders=None, lang="auto", type="basic"):
                 file_list.append(
                     os.path.relpath(os.path.join(root, file), input_folder)
                 )
-
+        print(f"Found {len(file_list)} files in {input_folder}.")
+        print(f"File list: {file_list}")
         log_file_path = os.path.join(output_folder, log_name)
         processed_files = get_processed_files(log_file_path)
+        print(f"File processed_files: {processed_files}")
 
         # Process files that are not in the log file
         new_files = [
@@ -95,13 +98,16 @@ def main(folders=None, lang="auto", type="basic"):
                and is_valid_file(os.path.join(input_folder, file))
         ]
 
+        print(f"Found {len(new_files)} new files to process.")
         # Add new files to the processed.txt log
         with open(log_file_path, "a") as log_file:
             for file in new_files:
+                print(f"Processing file: {file}")
                 # START PROCESSING FILES HERE
                 filename = get_file_name(file)
                 file_path = os.path.join(input_folder, file)
                 state = load_and_transcribe(file_path)
+                print(state)
 
                 # SAVE STATE HERE
                 output_file_folder = os.path.join(output_folder, filename)
