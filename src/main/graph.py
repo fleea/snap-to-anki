@@ -10,20 +10,17 @@ from main.state import InputState, State
 from main.utils.tools import SEARCH_TOOL
 from main.node.content_analysis.node import content_analysis
 from main.edge.route import route_model_output
+from main.node.flashcard_writer.node import flashcard_writer
 
 builder = StateGraph(State, input=InputState, config_schema=Configuration)
 
 builder.add_node("content_analysis", content_analysis)
-builder.add_node("tools", ToolNode([SEARCH_TOOL]))
+builder.add_node("flashcard_writer", flashcard_writer)
 
 builder.add_edge("__start__", "content_analysis")
-builder.add_conditional_edges(
-    "content_analysis",
-    route_model_output,
-)
+builder.add_edge("content_analysis", "flashcard_writer")
+builder.add_edge("flashcard_writer", "__end__")
 
-builder.add_edge("tools", "content_analysis")
-builder.add_edge("content_analysis", "__end__")
 # Compile the builder into an executable graph
 # You can customize this by adding interrupt points for state updates
 graph = builder.compile(

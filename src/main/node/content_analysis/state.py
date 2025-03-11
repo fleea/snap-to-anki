@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Literal
 
 from main.state import InputState
 
@@ -11,10 +11,16 @@ class ContentAnalysisOutput(BaseModel):
     """
 
     extracted_text: str = Field(description="All text extracted from the image")
-    key_content: str = Field(
-        description="A summary of the key content or information in the image"
+    content_types: List[Literal["questions", "vocabulary_table", "formulas"]] = Field(
+        description="Content types detected in the image"
     )
     language: str = Field(description="The language of the text in the image")
+    formatting_requirements: List[str] = Field(
+        description="Requirements for formatting the content [use_latex, preserve_numbering, ...]"
+    )
+    processing_instructions: str = Field(
+        description="Directions for the flashcard creator node downstream"
+    )
 
 
 class ContentAnalysisState(InputState):

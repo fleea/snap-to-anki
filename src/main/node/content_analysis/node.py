@@ -10,6 +10,8 @@ from .config import Configuration
 from .state import ContentAnalysisState, ContentAnalysisOutput
 from .prompt import SYSTEM_PROMPT
 from main.utils.tools import SEARCH_TOOL
+from langchain_core.messages import AIMessage
+from typing import List
 
 
 async def content_analysis(
@@ -43,7 +45,7 @@ async def content_analysis(
 
     structured_output = await model_with_struct.ainvoke(messages, config)
     response_message = AIMessage(
-        content=f"Analysis completed. Key content: {structured_output.key_content}"
+        content=f"Analysis completed. Content types: {structured_output.content_types}, Language: {structured_output.language}"
     )
 
     # Return the model's response as a list to be added to existing messages
