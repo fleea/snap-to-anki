@@ -44,9 +44,6 @@ async def content_analysis(
         messages.extend(state.messages)
 
     structured_output = await model_with_struct.ainvoke(messages, config)
-    response_message = AIMessage(
-        content=f"Analysis completed. Content types: {structured_output.content_types}, Language: {structured_output.language}"
-    )
 
     # Return the model's response as a list to be added to existing messages
-    return {"messages": [response_message], "analysis_output": structured_output}
+    return {"analysis_output": structured_output}
