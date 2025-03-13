@@ -147,6 +147,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.langgraph_api/
 
 # pytype static type analyzer
 .pytype/
@@ -161,8 +162,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
 
-data/input/**/*
-data/output/**/*
+export/
 
 
 .DS_Store
