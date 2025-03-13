@@ -1,7 +1,7 @@
-from typing import Dict, List
+from typing import Dict, List, Any
 from langchain_core.runnables import RunnableConfig
 from langchain_core.messages import AIMessage, SystemMessage, HumanMessage
-from .state import FlashcardWriterState, Flashcard, FlashcardWriterOutput
+from .state import FlashcardWriterState, FlashcardWriterOutput
 from .prompt import SYSTEM_PROMPT
 from .config import Configuration
 
@@ -11,12 +11,11 @@ from typing import List
 
 async def flashcard_writer(
     state: FlashcardWriterState, config: RunnableConfig
-) -> Dict[str, List[AIMessage]]:
+) -> Dict[str, Any]:
     """Convert analyzed content into Anki flashcards"""
     configuration = Configuration.from_runnable_config(config)
 
-    model = init_chat_model(configuration.model, temperature=0.2)
-    model_with_struct = model.with_structured_output(FlashcardWriterOutput)
+    model = init_chat_model(configuration.model, temperature=0.8).with_structured_output(FlashcardWriterOutput)
 
     messages = [
         SystemMessage(content=SYSTEM_PROMPT),
@@ -25,14 +24,14 @@ async def flashcard_writer(
                 {
                     "type": "text",
                     "text": f"""
-            Analysis Results:
-            {state.analysis_output.model_dump_json(indent=2)}
-            """,
+                        Analysis Results:
+                        {state.analysis_output.model_dump_json(indent=2)}
+                    """,
                 }
             ]
         ),
     ]
 
-    output = await model_with_struct.ainvoke(messages, config)
-
-    return {"flashcards": output.flashcards}
+    output = await model.ainvoke(messages, config)
+    
+    return {"csv": output.csv, "analysis_output": state.analysis_output}

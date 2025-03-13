@@ -19,6 +19,7 @@ class ContentAnalysisOutput(BaseModel):
     Always use this tool to structure your response to the user.
     Structured output for content analysis of an image.
     """
+    title: str = Field(description="Title of the image, separated with underscore")
     content: List[ContentSegment] = Field(
         description="Content types detected in the image"
     )
