@@ -1,23 +1,33 @@
 """Define the configurable parameters for the agent."""
 
 from __future__ import annotations
-
+import os
 from dataclasses import dataclass, field, fields
 from typing import Annotated, Optional
 
 from langchain_core.runnables import RunnableConfig, ensure_config
+from dotenv import load_dotenv
 
+load_dotenv()
 
 @dataclass(kw_only=True)
 class Configuration:
     """The configuration for the agent."""
 
+    content_analysis_model: str = os.getenv("CONTENT_ANALYSIS_MODEL", "openai:gpt-4o")
     model: Annotated[str, {"__template_metadata__": {"kind": "llm"}}] = field(
-        default="openai:gpt-4o",
+        default=content_analysis_model,
         metadata={
-            "description": "The name of the language model to use for the agent's main interactions. "
-            "Should be in the form: provider/model-name."
-        },
+            "description": "The name of the language model to use for the agent's main interactions."
+        }
+    )
+    
+    content_analysis_temperature: float = float(os.getenv("CONTENT_ANALYSIS_TEMPERATURE", "0.8"))
+    temperature: Annotated[float, {"__template_metadata__": {"kind": "temperature"}}] = field(
+        default=content_analysis_temperature,
+        metadata={
+            "description": "The temperature to use for the language model."
+        }
     )
 
     @classmethod

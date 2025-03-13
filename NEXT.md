@@ -34,3 +34,6 @@ But if you want to get a sneakpeek on challenges and design decisions, you are v
 - Apparently, claude is quite good is being the judge of a prompt
 - Accuracy for mixed content can be better
   - Add LLM as a judge for the last loop?
+- Built Openrouter Integration to check multiple other models. Make it generic so Langchain original init_chat_model can still be used
+- Google just dropped Gemma3, let's try to use it
+- Structured output with Gemma3 is still not ideal

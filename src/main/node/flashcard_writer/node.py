@@ -5,17 +5,17 @@ from .state import FlashcardWriterState, FlashcardWriterOutput
 from .prompt import SYSTEM_PROMPT
 from .config import Configuration
 
-from langchain.chat_models import init_chat_model
+from main.utils.chat_models import init_chat_model
 from typing import List
 
-
+# DOES NOT NEED STRUCTURED OUTPUT
 async def flashcard_writer(
     state: FlashcardWriterState, config: RunnableConfig
 ) -> Dict[str, Any]:
     """Convert analyzed content into Anki flashcards"""
     configuration = Configuration.from_runnable_config(config)
 
-    model = init_chat_model(configuration.model, temperature=0.8).with_structured_output(FlashcardWriterOutput)
+    model = init_chat_model(configuration.model, temperature=0.8)
 
     messages = [
         SystemMessage(content=SYSTEM_PROMPT),
@@ -34,4 +34,4 @@ async def flashcard_writer(
 
     output = await model.ainvoke(messages, config)
     
-    return {"csv": output.csv, "analysis_output": state.analysis_output}
+    return {"csv": output, "analysis_output": state.analysis_output}

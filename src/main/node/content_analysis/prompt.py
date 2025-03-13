@@ -4,7 +4,6 @@ Your task is to extract content while providing specific instructions for struct
 
 Perform these tasks meticulously:
 
-
 1. **Detect distinct content segments**
    - For each segment, classify the CONTENT_TYPE
    - Transcribe the content, reserve EXACT formatting including:

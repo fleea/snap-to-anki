@@ -94,6 +94,7 @@ Basic,"Where does photosynthesis occur?","Chloroplasts",Biology
   - CRITICAL: Each row MUST be on a separate line with actual newline characters, NOT escaped \n characters in a single string.
   - Important: If answer is not present and you need to generate answer, add *AI-GENERATED* in the tag
   - For exercise questions with multiple parts (A, B, C...), create separate cards for each part
+  - IMPORTANT: No explanation, just csv
 
 ** Examples of Good vs Bad Cards **
 
