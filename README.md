@@ -2,7 +2,7 @@
 
 A simple AI Workflow to convert educational images to ANKI Flashcard export using [LangGraph](https://github.com/langchain-ai/langgraph).
 
-![Graph view in LangGraph studio UI](./static/studio_ui.png)
+![Graph view in LangGraph studio UI](./static/node-graph.png)
 
 The core logic, defined in `src/main/graph.py`
 
