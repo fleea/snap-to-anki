@@ -4,7 +4,7 @@ import re
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
-from main.utils.chat_models import init_chat_model
+from langchain.chat_models import init_chat_model
 
 from .config import Configuration
 from .state import ContentAnalysisState, ContentAnalysisOutput

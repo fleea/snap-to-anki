@@ -5,7 +5,7 @@ from .state import FlashcardWriterState, FlashcardWriterOutput
 from .prompt import SYSTEM_PROMPT
 from .config import Configuration
 
-from main.utils.chat_models import init_chat_model
+from langchain.chat_models import init_chat_model
 from typing import List
 
 
