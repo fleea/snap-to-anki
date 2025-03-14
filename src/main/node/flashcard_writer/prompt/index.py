@@ -1,3 +1,13 @@
+from typing import List
+
+from main.node.flashcard_writer.prompt.vocab_table import VOCAB_TABLE_PROMPT
+from main.node.flashcard_writer.prompt.question_answer import QUESTION_ANSWER_PROMPT
+from main.node.flashcard_writer.prompt.question_answer_multiple_choice import QUESTION_ANSWER_MULTIPLE_CHOICE_PROMPT
+from main.node.flashcard_writer.prompt.text import TEXT_PROMPT
+from main.node.flashcard_writer.prompt.image_caption import IMAGE_CAPTION_PROMPT
+from main.node.flashcard_writer.prompt.decorative_image import DECORATIVE_IMAGE_PROMPT
+
+# Copy of the system prompt from prompt.py
 SYSTEM_PROMPT = """
 You are an Anki flashcard conversion expert. Convert the analyzed content into optimal flashcards for spaced repetition.
 
@@ -51,37 +61,6 @@ NoteType,Front,Back,Tags,ImagePath,Text
 ImageCaption,"Cell structure","Illustration of a cell with labels",Biology
 Basic,"Where does photosynthesis occur?","Chloroplasts",Biology
 
-
-**Conversion Rules:**
-1. For Questions:
-   - Create front/back cards preserving original question-answer pairs
-   - If answers are missing, generate plausible answers
-   - Keep questions self-contained
-   - IMPORTANT: Split multiple questions into separate cards (one question per card)
-
-2. For Vocabulary Tables:
-   - Split each table row into individual cards
-   - Front: Term/concept
-   - Back: Definition/translation
-   - Preserve original language pairs
-
-3. For Formulas:
-   - Front: LaTeX equation without solution
-   - Back: LaTeX equation with step-by-step solution
-   - Never convert LaTeX to plain text
-
-4. For Exercise Questions with Multiple Parts (e.g., A, B, C...):
-   - Split each part into a separate flashcard
-   - Include the instruction only once in the first card or as context
-   - For grammar exercises like verb conjugation, create one card per sentence/example
-   - Example: "Write the correct form of (happen) in: In the Grand Prix..." as one card, "Write the correct form of (reach) in: ...the driver cannot (reach) the turn." as another
-
-5. General Requirements:
-   - Maintain original text order
-   - Use Markdown/Latex formatting
-   - Create 1 card per discrete piece of information
-   - Add context tags (#physics, #spanish-verbs, #ai-generated)
-
 ** Key Requirements **
   - Prioritize simplicity: Use "Basic" for most text, "Cloze" for fill-in-the-blank.
   - STRICTLY FILTER OUT decorative or instructional content that doesn't contain actual learning material:
@@ -121,4 +100,68 @@ Basic,"Read the section 'Verb Spelling' (handbook, pp. 194-197) and answer the q
 
 GOOD (Skip purely instructional content)
 [Skip this content entirely as it's just an instruction with no educational value]
+
+
+**Conversion Rules:**
+
+- General Requirements:
+   - Maintain original text order
+   - Use Markdown/Latex formatting
+   - Create 1 card per discrete piece of information
+   - Add context tags (#physics, #spanish-verbs, #ai-generated)
+   - Do not expand or summarize the question or answer from the content
+   - Do not remove punctuation or special character like () or [] brackets
+
+- For Formulas:
+   - Front: LaTeX equation without solution
+   - Back: LaTeX equation with step-by-step solution
+   - Never convert LaTeX to plain text
 """
+
+
+def combine_specialized_prompts(segment_types: List[str]) -> str:
+    """
+    Combines specialized prompts based on the segment types provided.
+    
+    Args:
+        segment_types: List of segment types to include in the prompt
+        
+    Returns:
+        A combined string with specialized sections for each segment type
+    """
+    prompt_map = {
+        "vocabulary_table": VOCAB_TABLE_PROMPT,
+        "question_answer": QUESTION_ANSWER_PROMPT,
+        "question_answer_multiple_choice": QUESTION_ANSWER_MULTIPLE_CHOICE_PROMPT,
+        "text": TEXT_PROMPT,
+        "image_caption": IMAGE_CAPTION_PROMPT,
+        "decorative_image": DECORATIVE_IMAGE_PROMPT
+    }
+    
+    specialized_prompts = ""
+    
+    for segment_type in segment_types:
+        if segment_type in prompt_map:
+            if specialized_prompts:
+                specialized_prompts += "\n\n" + "-" * 50 + "\n\n"
+            specialized_prompts += prompt_map[segment_type]
+    
+    return specialized_prompts
+
+
+def get_prompt_by_segment_type(segment_types: List[str]) -> str:
+    """
+    Returns a specialized prompt based on the segment types provided.
+    
+    Args:
+        segment_types: List of segment types to include in the prompt
+        
+    Returns:
+        A combined prompt string with the base system prompt and specialized sections for each segment type
+    """
+    combined_prompt = SYSTEM_PROMPT
+    specialized_prompts = combine_specialized_prompts(segment_types)
+    if specialized_prompts:
+        combined_prompt += "\n\n" + "-" * 50 + "\n\n" + specialized_prompts
+    
+    return combined_prompt

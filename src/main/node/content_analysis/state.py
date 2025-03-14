@@ -12,7 +12,7 @@ class ContentSegment(BaseModel):
         description="Optional instruction for flashcard creator node downstream"
     )
     is_decorative: bool = Field(
-        description="Whether the content is decorative. If the segment seems not important, it will not be added on flashcard collection.")
+        description="Whether the content is decorative OR general instruction. If the segment seems not important, it will not be added on flashcard collection.")
 
 class ContentAnalysisOutput(BaseModel):
     """

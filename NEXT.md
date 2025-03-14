@@ -37,3 +37,9 @@ But if you want to get a sneakpeek on challenges and design decisions, you are v
 - Built Openrouter Integration to check multiple other models. Make it generic so Langchain original init_chat_model can still be used
 - Google just dropped Gemma3, let's try to use it
 - Structured output with Gemma3 is still not ideal
+
+14 March 2025
+- Added specialized prompts for each segment type to add accuracy
+- Decided to add all specialized prompts to the single writer prompt
+- Other options is to add another llm call (and extra node) per segment, but I think it will be too much
+- Contemplating if I should filter out generative segment in the node or asking llm to filter it out (in case upstream error)
