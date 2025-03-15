@@ -5,13 +5,13 @@ import re
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
 from main.utils.chat_models import init_chat_model
+from main.utils.constants import CONTENT_ANALYSIS_MODEL, CONTENT_ANALYSIS_TEMPERATURE
 
 from .config import Configuration
 from .state import ContentAnalysisState, ContentAnalysisOutput
 from .prompt import SYSTEM_PROMPT
 from main.utils.tools import SEARCH_TOOL
 from langchain_core.messages import AIMessage
-from typing import List
 
 
 async def content_analysis(
@@ -30,7 +30,10 @@ async def content_analysis(
         dict: A dictionary containing the model's response message with structured analysis.
     """
     configuration = Configuration.from_runnable_config(config)
-    model = init_chat_model(configuration.model, temperature=1)
+    
+    # Use model from configuration if specified, otherwise use the constant
+    model_name = configuration.model if configuration.model else CONTENT_ANALYSIS_MODEL
+    model = init_chat_model(model_name, temperature=CONTENT_ANALYSIS_TEMPERATURE)
     model_with_struct = model.with_structured_output(ContentAnalysisOutput)
 
     messages = [
@@ -45,5 +48,12 @@ async def content_analysis(
 
     structured_output = await model_with_struct.ainvoke(messages, config)
 
-    # Return the model's response as a list to be added to existing messages
-    return {"analysis_output": structured_output}
+    # Default should_evaluate to True if not specified
+    should_evaluate = getattr(state, 'should_evaluate', True)
+    export_folder = getattr(state, 'export_folder', '/export')
+    
+    return {
+        "analysis_output": structured_output,
+        "should_evaluate": should_evaluate,
+        "export_folder": export_folder
+    }

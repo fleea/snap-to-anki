@@ -8,9 +8,7 @@ from typing import Any, Dict, Optional
 from langchain_openai import ChatOpenAI
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain.chat_models import init_chat_model as langchain_init_chat_model
-from dotenv import load_dotenv
-
-load_dotenv()
+from main.utils.constants import OPENROUTER_BASE_URL
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -54,15 +52,14 @@ def init_chat_model(model_name: str, **kwargs) -> BaseChatModel:
             
             logger.info(f"Using OpenRouter with model: {model}")
             
-            # Log the base URL being used
-            base_url = "https://openrouter.ai/api/v1"
-            logger.info(f"OpenRouter base URL: {base_url}")
+            # Use the base URL from constants
+            logger.info(f"OpenRouter base URL: {OPENROUTER_BASE_URL}")
             
             model_kwargs = {
                 "model": model,
                 "temperature": kwargs.get("temperature", 0.7),
                 "openai_api_key": openrouter_api_key,
-                "base_url": base_url,
+                "base_url": OPENROUTER_BASE_URL,
                 "default_headers": {
                     "HTTP-Referer": "https://snap-to-anki.local",
                     "X-Title": "Snap-to-Anki"

@@ -2,7 +2,7 @@ from __future__ import annotations
 from pydantic import Field
 
 from dataclasses import dataclass, field
-from typing import Sequence
+from typing import Sequence, Optional
 
 from langchain_core.messages import AnyMessage
 from langgraph.graph import add_messages
@@ -10,13 +10,27 @@ from typing_extensions import Annotated
 
 
 @dataclass
-class InputState:
+class ConfigState:
+    """Defines the configuration state that will be shared across all nodes.
+    
+    This class contains configuration options that should be accessible to all nodes.
+    """
+    image_url: str
+    should_evaluate: bool = True
+    export_folder: str = "/export"
+
+
+@dataclass
+class InputState(ConfigState):
     """Defines the input state for the agent, representing a narrower interface to the outside world.
 
     This class is used to define the initial state and structure of incoming data.
     """
+    # Fields for passing data between nodes
+    analysis_output: Optional[dict] = None
+    csv: Optional[str] = None
+    evaluation_result: Optional[dict] = None
 
-    image_url: str
     messages: Annotated[Sequence[AnyMessage], add_messages] = field(
         default_factory=list
     )
@@ -45,3 +59,5 @@ class State(InputState):
     """
 
     complete: bool = False
+    evaluation_retry_count: int = 0
+    passed_evaluation: bool = False
