@@ -20,10 +20,13 @@ async def flashcard_exporter(
             "message": "Export skipped because export_folder is not specified"
         }
     
+    # Always use /export as the base directory and then add the specified folder inside it
+    # Remove leading slash if present
     if export_folder.startswith("/"):
         export_folder = export_folder[1:]
     
-    export_dir = os.path.join(os.getcwd(), export_folder)
+    # Create path with /export as the base directory
+    export_dir = os.path.join(os.getcwd(), "export", export_folder)
     os.makedirs(export_dir, exist_ok=True)
     
     filename = f"{title}.csv"

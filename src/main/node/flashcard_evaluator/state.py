@@ -3,11 +3,6 @@ from pydantic import BaseModel, Field
 from main.node.content_analysis.state import ContentAnalysisOutput
 from main.state import State
 
-class EvaluationScores(BaseModel):
-    transcription: int = Field(description="Score for transcription accuracy (0-10)")
-    formatCorrectness: int = Field(description="Score for format correctness (0-10)")
-    contentCompleteness: int = Field(description="Score for content completeness (0-10)")
-
 class EvaluationResult(BaseModel):
     transcription: int = Field(description="Score for transcription accuracy (0-10)")
     formatCorrectness: int = Field(description="Score for format correctness (0-10)")

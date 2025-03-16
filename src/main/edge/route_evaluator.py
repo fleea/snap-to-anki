@@ -31,7 +31,7 @@ def route_evaluator(state: FlashcardEvaluatorState) -> Literal[FLASHCARD_WRITER_
     # If we've reached the maximum number of retries, go to exporter
     if evaluation_retry_count >= EVALUATOR_MAX_RETRY:
         return FLASHCARD_EXPORTER_NODE
-    
+
     # Check if we have evaluation results
     if hasattr(state, 'evaluation_result') and state.evaluation_result:
         # If transcription score is less than 7, go back to content analysis
@@ -46,4 +46,4 @@ def route_evaluator(state: FlashcardEvaluatorState) -> Literal[FLASHCARD_WRITER_
         return FLASHCARD_EXPORTER_NODE
     
     # Default: if no evaluation result exists, go to writer
-    return FLASHCARD_WRITER_NODE
+    return FLASHCARD_EXPORTER_NODE
