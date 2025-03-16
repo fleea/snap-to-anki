@@ -43,3 +43,13 @@ But if you want to get a sneakpeek on challenges and design decisions, you are v
 - Decided to add all specialized prompts to the single writer prompt
 - Other options is to add another llm call (and extra node) per segment, but I think it will be too much
 - Contemplating if I should filter out generative segment in the node or asking llm to filter it out (in case upstream error)
+
+16 March 2025
+- Added llm as a judge for the last loop
+- Vibe coding with Windsurf for this feature, used more tokens that I expected
+- Probably easier to implement it myself since I need to correct it a lot
+- Simplify the state and constantify the node name
+
+TODO:
+- Modify prompt so the result became more compact and not always generate tags
+- Maybe Mistral OCR for the OCR? Need to check their API
