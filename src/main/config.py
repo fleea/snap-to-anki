@@ -12,21 +12,17 @@ from main.prompt import SYSTEM_PROMPT
 
 @dataclass(kw_only=True)
 class Configuration:
-    """The configuration for the agent."""
+    """The configuration for the agent.
+    
+    This is primarily used as the config_schema for the StateGraph builder.
+    Each node has its own specific Configuration class for node-specific settings.
+    """
 
     system_prompt: str = field(
         default=SYSTEM_PROMPT,
         metadata={
             "description": "The system prompt to use for the agent's interactions. "
             "This prompt sets the context and behavior for the agent."
-        },
-    )
-
-    model: Annotated[str, {"__template_metadata__": {"kind": "llm"}}] = field(
-        default="openai:gpt-4o-mini-2024-07-18",
-        metadata={
-            "description": "The name of the language model to use for the agent's main interactions. "
-            "Should be in the form: provider/model-name."
         },
     )
 

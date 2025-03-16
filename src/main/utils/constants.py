@@ -29,3 +29,10 @@ FLASHCARD_WRITER_TEMPERATURE = float(get_env("FLASHCARD_WRITER_TEMPERATURE", "0.
 EVALUATOR_MODEL = get_env("EVALUATOR_MODEL", "openai:gpt-4o")
 EVALUATOR_TEMPERATURE = float(get_env("EVALUATOR_TEMPERATURE", "0.2"))
 EVALUATOR_MAX_RETRY = int(get_env("EVALUATOR_MAX_RETRY", "2"))
+
+# Node names
+# Used in edge routing
+CONTENT_ANALYSIS_NODE = "content_analysis"
+FLASHCARD_WRITER_NODE = "flashcard_writer"
+FLASHCARD_EVALUATOR_NODE = "flashcard_evaluator"
+FLASHCARD_EXPORTER_NODE = "flashcard_exporter"

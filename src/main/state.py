@@ -15,9 +15,7 @@ class ConfigState:
     
     This class contains configuration options that should be accessible to all nodes.
     """
-    image_url: str
-    should_evaluate: bool = True
-    export_folder: str = "/export"
+    pass
 
 
 @dataclass
@@ -25,11 +23,11 @@ class InputState(ConfigState):
     """Defines the input state for the agent, representing a narrower interface to the outside world.
 
     This class is used to define the initial state and structure of incoming data.
+    Only includes fields that should be directly provided by the user.
     """
-    # Fields for passing data between nodes
-    analysis_output: Optional[dict] = None
-    csv: Optional[str] = None
-    evaluation_result: Optional[dict] = None
+    image_url: str
+    should_evaluate: bool = True
+    export_folder: str = "/export"
 
     messages: Annotated[Sequence[AnyMessage], add_messages] = field(
         default_factory=list
@@ -56,8 +54,12 @@ class State(InputState):
     """Represents the complete state of the agent, extending InputState with additional attributes.
 
     This class can be used to store any information needed throughout the agent's lifecycle.
+    Includes fields that are generated during processing and not directly provided by the user.
     """
-
-    complete: bool = False
+    # Fields for passing data between nodes
+    analysis_output: Optional[dict] = None
+    csv: Optional[str] = None
+    evaluation_result: Optional[dict] = None
+    
+    # State tracking fields
     evaluation_retry_count: int = 0
-    passed_evaluation: bool = False

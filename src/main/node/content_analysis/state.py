@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional, Literal
 
-from main.state import InputState
+from main.state import State
 
 CONTENT_TYPES = Literal["question_answer", "question_answer_multiple_choice", "vocabulary_table", "text", "image_caption", "decorative_image"]
 
@@ -26,7 +26,7 @@ class ContentAnalysisOutput(BaseModel):
     language: str = Field(description="The language of the text in the image")
 
 
-class ContentAnalysisState(InputState):
+class ContentAnalysisState(State):
     """
     State for content analysis processing.
     """

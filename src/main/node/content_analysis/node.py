@@ -10,7 +10,6 @@ from main.utils.constants import CONTENT_ANALYSIS_MODEL, CONTENT_ANALYSIS_TEMPER
 from .config import Configuration
 from .state import ContentAnalysisState, ContentAnalysisOutput
 from .prompt import SYSTEM_PROMPT
-from main.utils.tools import SEARCH_TOOL
 from langchain_core.messages import AIMessage
 
 
