@@ -47,7 +47,7 @@ But if you want to get a sneakpeek on challenges and design decisions, you are v
 16 March 2025
 - Added llm as a judge for the last loop
 - Vibe coding with Windsurf for this feature, used more tokens that I expected
-- Probably easier to implement it myself since I need to correct it a lot
+- Probably easier to implement it myself since I need to correct Claude a lot
 - Simplify the state and constantify the node name
 
 TODO:

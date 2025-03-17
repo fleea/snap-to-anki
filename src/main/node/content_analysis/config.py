@@ -6,25 +6,21 @@ from dataclasses import dataclass, field, fields
 from typing import Annotated, Optional
 
 from langchain_core.runnables import RunnableConfig, ensure_config
-from dotenv import load_dotenv
-
-load_dotenv()
+from main.utils.constants import CONTENT_ANALYSIS_MODEL, CONTENT_ANALYSIS_TEMPERATURE
 
 @dataclass(kw_only=True)
 class Configuration:
-    """The configuration for the agent."""
+    """The configuration for the analysis agent."""
 
-    content_analysis_model: str = os.getenv("CONTENT_ANALYSIS_MODEL", "openai:gpt-4o")
     model: Annotated[str, {"__template_metadata__": {"kind": "llm"}}] = field(
-        default=content_analysis_model,
+        default=CONTENT_ANALYSIS_MODEL,
         metadata={
             "description": "The name of the language model to use for the agent's main interactions."
         }
     )
     
-    content_analysis_temperature: float = float(os.getenv("CONTENT_ANALYSIS_TEMPERATURE", "0.8"))
     temperature: Annotated[float, {"__template_metadata__": {"kind": "temperature"}}] = field(
-        default=content_analysis_temperature,
+        default=CONTENT_ANALYSIS_TEMPERATURE,
         metadata={
             "description": "The temperature to use for the language model."
         }

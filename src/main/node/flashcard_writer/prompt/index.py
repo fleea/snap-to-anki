@@ -50,6 +50,8 @@ Basic,"What is photosynthesis?","Process converting light to energy",Biology
 Cloze,"The {{c1::mitochondria}} is the powerhouse of the cell",,Biology
 ImageOcclusion,,,"Diagram of cell structure","cell_diagram.jpg"
 
+IMPORTANT: Add tags sparingly
+
 ** Example Input → Output **
 
 Input Segment (Dutch Textbook):
@@ -58,8 +60,8 @@ Input Segment (Dutch Textbook):
 
 Output CSV:
 NoteType,Front,Back,Tags,ImagePath,Text
-ImageCaption,"Cell structure","Illustration of a cell with labels",Biology
-Basic,"Where does photosynthesis occur?","Chloroplasts",Biology
+ImageCaption,"Cell structure","Illustration of a cell with labels",
+Basic,"Where does photosynthesis occur?","Chloroplasts",
 
 ** Key Requirements **
   - Prioritize simplicity: Use "Basic" for most text, "Cloze" for fill-in-the-blank.
