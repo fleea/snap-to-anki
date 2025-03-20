@@ -50,6 +50,36 @@ But if you want to get a sneakpeek on challenges and design decisions, you are v
 - Probably easier to implement it myself since I need to correct Claude a lot
 - Simplify the state and constantify the node name
 
-TODO:
+17 March 2025
 - Modify prompt so the result became more compact and not always generate tags
 - Maybe Mistral OCR for the OCR? Need to check their API
+
+18 March 2025
+- Mistral OCR is not ready to be used in langchain_mistralai
+- It has different URL and different data structure
+- Also currently not exposed in openrouter
+- This is probably not chat models. We need to find a way to use it, but if not available, then we will fallback to other model
+- Mistral also has chat completion that uses ocr chain (ocr + chat model), but it doesn't support image cropping
+- Since we will need the image crop feature to beat the final boss, Image Occlusion, we need to use Tool to get raw ocr result
+
+19 March 2025
+- Langgraph make it easy to add tools using ToolNode, use it instead of bind_tools from langchain
+- Why does content_analysis node not using ocr_tools provided? How to coerce models to always use tools if present?
+- Decided to split content_extractor from content_analysis
+- Worried about cost/latency of using tools, so I think I need to add input state that will toggle ocr or go directly to content analysis
+- MistralAI OCR currently does not seems to support async, but it support javascript
+
+20 March 2025
+- Connecting Mistral AI output to the next node might be more complex than I thought
+- I need to crop images and feed it forward
+- Since we want to use the application for next month, I need to skip this one and move on
+- GPT4.0 result is satisfying enough
+- But I will be back to tackle Image Occlusion. This is pushed to feature/analyzer/add-mistral
+
+TODO:
+- Need to think on how to create syntetic data for llm evaluation
+- MistralAI OCR can receive uploaded file
+- Need to clean up repeated config.py files in each node
+
+OTHER IDEAS:
+- Crawl website (like API documentation or github books) to generate flashcards

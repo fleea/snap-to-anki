@@ -35,7 +35,7 @@ async def flashcard_evaluator(
                     "type": "text",
                     "text": "Please evaluate the flashcards based on the criteria in your instructions."
                 },
-                { "type": "image_url", "image_url": {"url":state.image_url}}
+                { "type": "image_url", "image_url": {"url":state.url}}
             ]
         )
     ]

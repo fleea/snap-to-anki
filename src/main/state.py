@@ -1,8 +1,7 @@
 from __future__ import annotations
 from pydantic import Field
-
+from typing import List, Dict, Any, Sequence, Optional
 from dataclasses import dataclass, field
-from typing import Sequence, Optional
 
 from langchain_core.messages import AnyMessage
 from langgraph.graph import add_messages
@@ -25,7 +24,7 @@ class InputState(ConfigState):
     This class is used to define the initial state and structure of incoming data.
     Only includes fields that should be directly provided by the user.
     """
-    image_url: str
+    url: str
     should_evaluate: bool = True
     export_folder: str = "/export"
 
@@ -63,3 +62,4 @@ class State(InputState):
     
     # State tracking fields
     evaluation_retry_count: int = 0
+    ocr_data: Dict[str, Any] = Field(description="List of Raw OCR data from Mistral AI or fallback LLM")

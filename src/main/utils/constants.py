@@ -17,6 +17,9 @@ def get_env(key, default):
 # OpenRouter base URL
 OPENROUTER_BASE_URL = get_env("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
 
+CONTENT_EXTRACTOR_MODEL = get_env("CONTENT_EXTRACTOR_MODEL", "openai:gpt-4o-mini-2024-07-18")
+CONTENT_EXTRACTOR_TEMPERATURE = float(get_env("CONTENT_EXTRACTOR_TEMPERATURE", "0.8"))
+
 # Content Analysis configuration
 CONTENT_ANALYSIS_MODEL = get_env("CONTENT_ANALYSIS_MODEL", "openai:gpt-4o")
 CONTENT_ANALYSIS_TEMPERATURE = float(get_env("CONTENT_ANALYSIS_TEMPERATURE", "0.8"))
@@ -30,9 +33,16 @@ EVALUATOR_MODEL = get_env("EVALUATOR_MODEL", "openai:gpt-4o")
 EVALUATOR_TEMPERATURE = float(get_env("EVALUATOR_TEMPERATURE", "0.2"))
 EVALUATOR_MAX_RETRY = int(get_env("EVALUATOR_MAX_RETRY", "2"))
 
+# MistralAI OCR configuration
+MISTRALAI_OCR_BASE_URL = get_env("MISTRALAI_OCR_BASE_URL", "https://api.mistral.ai/v1/ocr")
+MISTRAL_API_KEY = get_env("MISTRAL_API_KEY", "")
+
 # Node names
 # Used in edge routing
+CONTENT_EXTRACTOR_NODE = "content_extractor"
 CONTENT_ANALYSIS_NODE = "content_analysis"
 FLASHCARD_WRITER_NODE = "flashcard_writer"
 FLASHCARD_EVALUATOR_NODE = "flashcard_evaluator"
 FLASHCARD_EXPORTER_NODE = "flashcard_exporter"
+
+MODEL_DEBUG = get_env("MODEL_DEBUG", "False")
