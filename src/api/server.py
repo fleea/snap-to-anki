@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import AsyncIterable, List, Dict, Any
+from typing import AsyncIterable, Dict, Any, List
 import asyncio
 import json
 from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -16,10 +16,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Import the graph from main
+# Import the graph and InputState from main
 from src.main.graph import graph
-from src.main.state import InputState as AgentInputState
+from src.main.state import InputState
 
+# Create a Pydantic model that mirrors InputState for request validation
 class InputStateModel(BaseModel):
     image_url: str
     should_evaluate: bool = True
@@ -29,17 +30,17 @@ class InputStateModel(BaseModel):
 @app.post("/")
 async def run_agent(input_state: InputStateModel):
     """Stream agent execution including node outputs"""
-    # Convert Pydantic model to dict for the agent
-    input_dict = {
-        "image_url": input_state.image_url,
-        "should_evaluate": input_state.should_evaluate,
-        "export_folder": input_state.export_folder,
-        "messages": input_state.messages
-    }
+    # Convert Pydantic model to InputState for the agent
+    agent_input = InputState(
+        image_url=input_state.image_url,
+        should_evaluate=input_state.should_evaluate,
+        export_folder=input_state.export_folder,
+        messages=input_state.messages
+    )
     
     async def event_stream():
         try:
-            async for event in graph.astream(input_dict):
+            async for event in graph.astream(agent_input):
                 # Convert event to a serializable format
                 serializable_event = {}
                 for key, value in event.items():
